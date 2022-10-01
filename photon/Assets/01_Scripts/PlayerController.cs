@@ -9,16 +9,16 @@ using Photon.Realtime;
 public class PlayerController : MonoBehaviourPunCallbacks
 {
     [SerializeField]
-    private float _moveSpeed = 5f;
+    private float _moveSpeed = 10f;
     [SerializeField]
-    private float _rotationSpeed = 60f;
+    private float _rotationSpeed = 80f;
     private Rigidbody _rigidbody;
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
 
-        if(photonView.IsMine)
+        if (photonView.IsMine)
         {
             Camera.main.transform.parent = transform;
             Camera.main.transform.localPosition = new Vector3(0f, 2f, -10f);
@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     private void FixedUpdate()
     {
 
-        if(false== photonView.IsMine)
+        if (false == photonView.IsMine)
         {
             return;
         }
@@ -42,6 +42,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
         float inputRight = Input.GetAxis("Horizontal");
         float deltaRotationY = inputRight * _rotationSpeed * Time.fixedDeltaTime;
         _rigidbody.MoveRotation(_rigidbody.rotation * Quaternion.Euler(0f, deltaRotationY, 0f));
-    }    
- 
+    }
+
 }

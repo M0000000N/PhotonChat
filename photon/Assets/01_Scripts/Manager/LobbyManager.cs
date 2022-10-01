@@ -8,9 +8,14 @@ using Photon.Realtime;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] TMP_InputField _nickname; // 집가고싶다
+    [SerializeField] TMP_InputField _nickname;
     [SerializeField] Button _joinButton;
     private TextMeshProUGUI _joinButtonText;
+
+    private static readonly RoomOptions RandomRoomOptions = new RoomOptions()
+    {
+        MaxPlayers = 20
+    };
 
     private void deactivateJoinButton(string message)
     {
@@ -27,13 +32,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     private void Awake()
     {
         _joinButtonText = _joinButton.GetComponentInChildren<TextMeshProUGUI>();
+
         // 버튼 이벤트 메소드 연결
-        _joinButton.onClick.AddListener(OnClickJoinButton); // 리무브리스너 할 필요가 없다. 왜지 계속 들을 거라서?
+        _joinButton.onClick.AddListener(OnClickJoinButton);
+
         // 마스터 서버 연결시도
         PhotonNetwork.ConnectUsingSettings();
 
         deactivateJoinButton("접속중");
-
     }
 
     public override void OnConnectedToMaster()
@@ -52,11 +58,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         PhotonNetwork.ConnectUsingSettings();
     }
 
-    private static readonly RoomOptions RandomRoomOptions = new RoomOptions()
-    {
-        MaxPlayers = 20
-    };
-
     private void OnClickJoinButton()
     {
         if(_nickname.text.Length ==0)
@@ -68,7 +69,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         Data data = FindObjectOfType<Data>();
         data.Nickname = _nickname.text;
 
-        Debug.Log($"{ data.Nickname}");
+        Debug.Log($"입력된 닉네임 : {data.Nickname}");
 
         // 아무 방이나 입장한다.
         PhotonNetwork.JoinOrCreateRoom("Metavers", RandomRoomOptions, TypedLobby.Default);

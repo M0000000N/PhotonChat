@@ -20,11 +20,13 @@ public class NicknameTextUI : MonoBehaviourPunCallbacks, IPunObservable
             Nickname = $"{_nickname} : {clickCount}";
         }
     }
+
     public string Nickname
     {
         get { return _ui.text; }
         set { _ui.text = value; }
     }
+
     public void OnPhotonSerializedView(PhotonStream stream, PhotonMessageInfo info)
     {
 
@@ -41,11 +43,11 @@ public class NicknameTextUI : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
-
     private void Awake()
     {
         _ui = GetComponentInChildren<TextMeshProUGUI>();
     }
+
     private void Start()
     {
         Data data = FindObjectOfType<Data>();
@@ -53,7 +55,7 @@ public class NicknameTextUI : MonoBehaviourPunCallbacks, IPunObservable
         Nickname = Nickname;
         photonView.RPC("SetNickname", RpcTarget.All, Nickname);
     }
-    // Update is called once per frame
+
     void Update()
     {
         if(Input.GetMouseButtonDown(0))
