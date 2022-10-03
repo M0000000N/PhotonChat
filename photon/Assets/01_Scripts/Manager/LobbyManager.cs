@@ -9,6 +9,7 @@ using Photon.Realtime;
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] TMP_InputField _nickname;
+    [SerializeField] TextMeshProUGUI logText;
     [SerializeField] Button _joinButton;
     private TextMeshProUGUI _joinButtonText;
 
@@ -20,7 +21,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     private void deactivateJoinButton(string message)
     {
         _joinButton.interactable = false;
-        _joinButtonText.text = message;
+        logText.text = message;
     }
 
     private void activeJoinButton()
@@ -44,16 +45,16 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
-        Debug.Log("마스터에 서버 접속됨");
+        logText.text = "마스터에 서버 접속됨";
 
         // 버튼 활성화
         activeJoinButton();
     }
 
-    public override void OnDisconnected(DisconnectCause cause)
+    public override void OnDisconnected(DisconnectCause cause) // ConnectUsingSettings()에 연결이 끊겼을 때 호출되는 콜백함수다.
     {
         // 버튼 비활성화
-        deactivateJoinButton("연결이 끊김.\n재접속 시도");
+        deactivateJoinButton("연결이 끊김. 재접속 시도중..");
 
         PhotonNetwork.ConnectUsingSettings();
     }
@@ -62,14 +63,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         if(_nickname.text.Length ==0)
         {
-            Debug.Log("닉네임을 입력하세요");
+            logText.text = "닉네임을 입력하세요";
             return;
         }
 
         Data data = FindObjectOfType<Data>();
         data.Nickname = _nickname.text;
 
-        Debug.Log($"입력된 닉네임 : {data.Nickname}");
+        // Debug.Log($"입력된 닉네임 : {data.Nickname}");
 
         // 아무 방이나 입장한다.
         PhotonNetwork.JoinOrCreateRoom("Metavers", RandomRoomOptions, TypedLobby.Default);
@@ -77,7 +78,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        Debug.Log("방에 입장함");
+        logText.text = "방에 입장함";
 
         // 세션이 성립되었다고 해서 실제로 이동하는 것이 아니다. -> 레벨 이동 함수 사용
         PhotonNetwork.LoadLevel("Main");

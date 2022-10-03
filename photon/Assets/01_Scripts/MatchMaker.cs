@@ -4,10 +4,9 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class MatchMaker : MonoBehaviourPunCallbacks {
-
+public class MatchMaker : MonoBehaviourPunCallbacks
+{
 	public GameObject photonObject;
-
 
 
 	void Start () {
@@ -48,7 +47,6 @@ public class MatchMaker : MonoBehaviourPunCallbacks {
         PhotonNetwork.CreateRoom(null);
 
 		//PhotonNetwork.CreateRoom(null, new RoomOptions{MaxPlayers = 4});
-    }
-   
+    } 
 
 }

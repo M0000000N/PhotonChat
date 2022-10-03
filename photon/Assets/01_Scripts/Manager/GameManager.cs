@@ -13,11 +13,7 @@ public class GameManager : SingletonBehaviour<GameManager>
         float randomPosZ = Random.Range(-50f, 50f);
         Vector3 randomPos = new Vector3(randomPosX, 1f, randomPosZ);
 
-        Data data = FindObjectOfType<Data>();
-
         GameObject playerObject = PhotonNetwork.Instantiate("Player", randomPos, Quaternion.identity);
         PlayerController player = playerObject.GetComponent<PlayerController>();
-       //player.photonView.RPC("SetNickname", RpcTarget.All, data.Nickname);
     }
-
 }
