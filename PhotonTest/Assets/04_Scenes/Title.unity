@@ -158,8 +158,8 @@ MonoBehaviour:
   createRoomButton: {fileID: 5059769301304556611}
   PlusButton: {fileID: 1091854367}
   scrollRect: {fileID: 5059769301260505125}
-  roomBtnPref: {fileID: 7410065932544154010, guid: ed0b563385c1f834ba7e89430dd86605, type: 3}
   roomBtnParent: {fileID: 5059769301385461749}
+  roomBtnPref: {fileID: 6335303861324093436, guid: ed0b563385c1f834ba7e89430dd86605, type: 3}
   createRoomPopUp: {fileID: 5059769302456234502}
   createRoomName: {fileID: 5059769301533222719}
   createRoomButtonInPannel: {fileID: 5059769302635213217}

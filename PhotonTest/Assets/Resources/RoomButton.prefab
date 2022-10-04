@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1 / 8
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: e53d72d6d07253c48b4dddb813651848, type: 2}
+  m_sharedMaterial: {fileID: 4496879214096137702, guid: e53d72d6d07253c48b4dddb813651848, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -147,6 +147,7 @@ GameObject:
   - component: {fileID: 7410065932544154009}
   - component: {fileID: 7410065932544154008}
   - component: {fileID: 6335303861324093436}
+  - component: {fileID: 5442707188719415745}
   m_Layer: 5
   m_Name: RoomButton
   m_TagString: Untagged
@@ -272,6 +273,28 @@ MonoBehaviour:
   peopleCount: 0
   RoomNameText: {fileID: 7410065932933313511}
   memberText: {fileID: 7410065932452628417}
+--- !u!114 &5442707188719415745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7410065932544154010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &7410065932933313505
 GameObject:
   m_ObjectHideFlags: 0

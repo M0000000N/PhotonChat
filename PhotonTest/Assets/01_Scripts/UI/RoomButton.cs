@@ -1,17 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using Photon.Pun;
 using TMPro;
+using Photon.Realtime;
+using UnityEngine.UI;
 
-public class RoomButton : MonoBehaviour
+public class RoomButton : MonoBehaviourPunCallbacks
 {
     public int peopleCount;
-    public TextMeshProUGUI RoomNameText;
+    [SerializeField] TextMeshProUGUI RoomNameText;
     [SerializeField] TextMeshProUGUI memberText;
-    void Start()
+
+    public RoomInfo RoomInfo { get; private set; }
+    public void SetRoomInfo(RoomInfo _roomInfo)
     {
-        peopleCount = 0;
-        memberText.text = $"{peopleCount} / 8";
+        RoomInfo = _roomInfo;
+        RoomNameText.text = _roomInfo.Name;
+        memberText.text = $"드간인원 / {_roomInfo.MaxPlayers}";
     }
 }

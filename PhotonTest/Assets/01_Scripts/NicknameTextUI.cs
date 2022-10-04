@@ -7,7 +7,7 @@ using Photon.Realtime;
 
 public class NicknameTextUI : MonoBehaviourPunCallbacks, IPunObservable
 {
-    private TextMeshProUGUI _ui;
+    private TextMeshProUGUI nickname;
     private int _clickCount = 0;
     private string _nickname;
 
@@ -17,7 +17,7 @@ public class NicknameTextUI : MonoBehaviourPunCallbacks, IPunObservable
         set
         {
             _clickCount = value;
-            _ui.text = $"{_nickname} 문수 : {_clickCount} ";
+            nickname.text = $"{Nickname} 문수 : {_clickCount} ";
         }
     }
 
@@ -42,7 +42,7 @@ public class NicknameTextUI : MonoBehaviourPunCallbacks, IPunObservable
 
     private void Awake()
     {
-        _ui = GetComponentInChildren<TextMeshProUGUI>();
+        nickname = GetComponentInChildren<TextMeshProUGUI>();
     }
 
     private void Start()
