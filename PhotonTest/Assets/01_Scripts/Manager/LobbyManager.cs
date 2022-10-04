@@ -8,79 +8,154 @@ using Photon.Realtime;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] TMP_InputField _nickname;
+    private string gameVersion = "1.0.1";
+
+    [Header("타이틀 화면")]
+    [SerializeField] TMP_InputField nickname;
     [SerializeField] TextMeshProUGUI logText;
-    [SerializeField] Button _joinButton;
-    private TextMeshProUGUI _joinButtonText;
+
+    [SerializeField] Button randomJoinButton;
+    [SerializeField] Button createRoomButton;
+
+    [Header("스크롤 뷰")]
+    [SerializeField] Button PlusButton;
+    [SerializeField] ScrollRect scrollRect;
+    [SerializeField] GameObject roomBtnPref;
+    [SerializeField] Transform roomBtnParent;
+
+    [Header("방만들기 팝업")]
+    [SerializeField] GameObject createRoomPopUp;
+    [SerializeField] TMP_InputField createRoomName;
+    [SerializeField] Button createRoomButtonInPannel;
+
+    private string roomName;
+    int index = 0; // 들어간 사람 숫자가 들어올 것
 
     private static readonly RoomOptions RandomRoomOptions = new RoomOptions()
     {
         MaxPlayers = 20
     };
 
+    private void Awake()
+    {
+        createRoomName = createRoomPopUp.GetComponentInChildren<TMP_InputField>();
+        createRoomPopUp.SetActive(false);
+
+        // 버튼 이벤트 메소드 연결
+        randomJoinButton.onClick.AddListener(OnClickRandomJoinButton);
+        createRoomButton.onClick.AddListener(OnClickCreateRoomButton);
+        createRoomButtonInPannel.onClick.AddListener(OnClickcreateRoomButtonInPannel);
+        PlusButton.onClick.AddListener(OnClickPlusButton);
+
+        PhotonNetwork.GameVersion = gameVersion;
+
+        // 마스터 서버 연결시도
+        PhotonNetwork.ConnectUsingSettings();
+
+
+        deactivateJoinButton("접속중");
+    }
+
+    private void OnClickPlusButton()
+    {
+        GameObject roomButton = Instantiate(roomBtnPref, roomBtnParent) as GameObject;
+        roomButton.GetComponent<RoomButton>().peopleCount = index; // 들어간 사람 숫자
+        //roomButton.GetComponent<RoomButton>().RoomNameText = index; // 들어간 사람 숫자
+    }
+
     private void deactivateJoinButton(string message)
     {
-        _joinButton.interactable = false;
+        randomJoinButton.interactable = false;
         logText.text = message;
     }
 
     private void activeJoinButton()
     {
-        _joinButton.interactable = true;
-        _joinButtonText.text = "입장하기";
-    }
-
-    private void Awake()
-    {
-        _joinButtonText = _joinButton.GetComponentInChildren<TextMeshProUGUI>();
-
-        // 버튼 이벤트 메소드 연결
-        _joinButton.onClick.AddListener(OnClickJoinButton);
-
-        // 마스터 서버 연결시도
-        PhotonNetwork.ConnectUsingSettings();
-
-        deactivateJoinButton("접속중");
+        randomJoinButton.interactable = true;
+        // randomJoinButtonText.text = "입장하기";
     }
 
     public override void OnConnectedToMaster()
     {
-        logText.text = "마스터에 서버 접속됨";
-
-        // 버튼 활성화
         activeJoinButton();
+        logText.text = "마스터에 서버 접속됨";
     }
 
     public override void OnDisconnected(DisconnectCause cause) // ConnectUsingSettings()에 연결이 끊겼을 때 호출되는 콜백함수다.
     {
-        // 버튼 비활성화
-        deactivateJoinButton("연결이 끊김. 재접속 시도중..");
+        deactivateJoinButton("연결이 끊김. 재접속 시도 중..");
 
         PhotonNetwork.ConnectUsingSettings();
     }
-
-    private void OnClickJoinButton()
+    
+    private void createRoomUI(string _rommName)
     {
-        if(_nickname.text.Length ==0)
+        GameObject roomButton = Instantiate(roomBtnPref, roomBtnParent) as GameObject;
+        roomButton.GetComponent<RoomButton>().peopleCount = index; // 들어간 사람 숫자
+        roomButton.GetComponent<RoomButton>().RoomNameText.text = _rommName;
+    }
+
+    private void OnClickRandomJoinButton()
+    {
+        if (nickname.text.Length == 0)
         {
             logText.text = "닉네임을 입력하세요";
             return;
         }
 
-        Data data = FindObjectOfType<Data>();
-        data.Nickname = _nickname.text;
+        // 마스터 서버에 접속중이라면 룸 접속 실행
+        if (PhotonNetwork.IsConnected)
+        {
+            Data data = FindObjectOfType<Data>();
+            data.Nickname = nickname.text;
 
-        // Debug.Log($"입력된 닉네임 : {data.Nickname}");
+            //PhotonNetwork.JoinOrCreateRoom("Metavers", RandomRoomOptions, TypedLobby.Default);
+            PhotonNetwork.JoinRandomRoom();
+        }
+        else
+        {
+            deactivateJoinButton("연결이 끊김. 재접속 시도 중..");
+            PhotonNetwork.ConnectUsingSettings();
+        }
+    }
 
-        // 아무 방이나 입장한다.
-        PhotonNetwork.JoinOrCreateRoom("Metavers", RandomRoomOptions, TypedLobby.Default);
+    private void OnClickCreateRoomButton()
+    {
+        if (nickname.text.Length == 0)
+        {
+            logText.text = "닉네임을 입력하세요";
+            return;
+        }
+
+        createRoomPopUp.SetActive(true);
+    }
+
+    private void OnClickcreateRoomButtonInPannel()
+    {
+        if (createRoomName.text.Length == 0)
+        {
+            logText.text = "방 이름을 입력하세요";
+            return;
+        }
+        roomName = createRoomName.text;
+        createRoomUI(roomName);
+
+        PhotonNetwork.JoinOrCreateRoom(roomName, RandomRoomOptions, TypedLobby.Default);
+
+        createRoomPopUp.SetActive(false);
     }
 
     public override void OnJoinedRoom()
     {
         logText.text = "방에 입장함";
 
-        // 세션이 성립되었다고 해서 실제로 이동하는 것이 아니다. -> 레벨 이동 함수 사용
         PhotonNetwork.LoadLevel("Main");
+    }
+
+    public override void OnJoinRandomFailed(short returnCode, string message)
+    {
+        logText.text = "빈 방이 없음, 새로운 방 생성..";
+
+        OnClickCreateRoomButton();
     }
 }

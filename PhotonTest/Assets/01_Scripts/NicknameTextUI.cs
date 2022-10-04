@@ -17,14 +17,14 @@ public class NicknameTextUI : MonoBehaviourPunCallbacks, IPunObservable
         set
         {
             _clickCount = value;
-            Nickname = $"{_nickname} : {_clickCount}";
+            _ui.text = $"{_nickname} 문수 : {_clickCount} ";
         }
     }
 
     public string Nickname
     {
-        get { return _ui.text; }
-        set { _ui.text = value; }
+        get { return _nickname; }
+        set { _nickname = value; }
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -33,13 +33,10 @@ public class NicknameTextUI : MonoBehaviourPunCallbacks, IPunObservable
         if (stream.IsWriting)
         {
             stream.SendNext(ClickCount);
-            //stream.SendNext(Nickname); 닉네임을 안넣은 이유 : 네트워크 비용을 줄이기 위해
-            // 똑같은 화면을 그리려면 어떤 데이터를 주고받아야 하는지 고민해야한다.
         }
         else // 역직렬화 -> 서버로부터 데이터를 받은 것
         {
             ClickCount = (int)stream.ReceiveNext();
-            //Nickname = (string)stream.ReceiveNext();
         }
     }
 
@@ -53,17 +50,14 @@ public class NicknameTextUI : MonoBehaviourPunCallbacks, IPunObservable
         Data data = FindObjectOfType<Data>();
         if (photonView.IsMine)
         {
-            _nickname = data.Nickname;
+            Nickname = data.Nickname;
             ClickCount = 0;
             photonView.RPC("SetNickname", RpcTarget.Others, Nickname);
-            
-            //Nickname = _nickname;
-            //photonView.RPC("SetNickname", RpcTarget.All, Nickname);
         }
     }
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && photonView.IsMine)
         {
             ++ClickCount;
         }

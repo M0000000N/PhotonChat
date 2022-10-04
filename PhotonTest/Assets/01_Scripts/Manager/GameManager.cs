@@ -9,11 +9,11 @@ public class GameManager : SingletonBehaviour<GameManager>
 
     public void Start()
     {
-        float randomPosX = Random.Range(-50f, 50f);
-        float randomPosZ = Random.Range(-50f, 50f);
+        float randomPosX = Random.Range(-30f, 30f);
+        float randomPosZ = Random.Range(-30f, 30f);
         Vector3 randomPos = new Vector3(randomPosX, 1f, randomPosZ);
 
-        GameObject playerObject = PhotonNetwork.Instantiate("Player", randomPos, Quaternion.identity);
-        PlayerController player = playerObject.GetComponent<PlayerController>();
+        GameObject playerObject = PhotonNetwork.Instantiate(PlayerPrefeb.name, randomPos, Quaternion.identity);
+        // PlayerController player = playerObject.GetComponent<PlayerController>();
     }
 }
