@@ -17,6 +17,6 @@ public class RoomButton : MonoBehaviourPunCallbacks
     {
         RoomInfo = _roomInfo;
         RoomNameText.text = _roomInfo.Name;
-        memberText.text = $"드간인원 / {_roomInfo.MaxPlayers}";
+        memberText.text = $"{_roomInfo.PlayerCount} / {_roomInfo.MaxPlayers}";
     }
 }

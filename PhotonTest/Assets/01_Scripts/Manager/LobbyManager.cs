@@ -8,7 +8,7 @@ using Photon.Realtime;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
-    private string gameVersion = "1.0.3";
+    private string gameVersion = "1.0.4";
 
     [Header("타이틀 화면")]
     [SerializeField] TMP_InputField nickname;
@@ -35,7 +35,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private static readonly RoomOptions RandomRoomOptions = new RoomOptions()
     {
-        MaxPlayers = 20
+        MaxPlayers = 3
     };
 
     private void Awake()
@@ -47,7 +47,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         randomJoinButton.onClick.AddListener(OnClickRandomJoinButton);
         createRoomButton.onClick.AddListener(OnClickCreateRoomButton);
         createRoomButtonInPannel.onClick.AddListener(OnClickcreateRoomButtonInPannel);
-        //PlusButton.onClick.AddListener(OnClickPlusButton);
 
         PhotonNetwork.GameVersion = gameVersion;
 
@@ -80,15 +79,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             }
         }
     }
-
-    //[PunRPC]
-    //private void OnClickPlusButton()
-    //{
-    //    GameObject roomButton = PhotonNetwork.Instantiate(roomBtnPref.name, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
-    //    roomButton.transform.parent = roomBtnParent.transform;
-    //    roomButton.GetComponent<RoomButton>().peopleCount = index; // 들어간 사람 숫자
-    //    roomButton.GetComponent<RoomButton>().RoomNameText = index; // 들어간 사람 숫자
-    //}
 
     private void deactivateJoinButton(string message)
     {
@@ -160,9 +150,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             logText.text = "방 이름을 입력하세요";
             return;
         }
-
-        // createRoomUI(roomName);
-        // photonView.RPC("createRoomUI", RpcTarget.Others, roomName);
 
         PhotonNetwork.JoinOrCreateRoom(createRoomName.text, RandomRoomOptions, TypedLobby.Default);
 
