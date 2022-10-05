@@ -17,8 +17,8 @@ public class GameManager : SingletonBehaviour<GameManager>
         GameObject playerObject = PhotonNetwork.Instantiate(PlayerPrefeb.name, randomPos, Quaternion.identity);
 
         exitButton.onClick.AddListener(OnClickExitButton);
-
     }
+
     private void OnClickExitButton()
     {
         PhotonNetwork.LeaveRoom();

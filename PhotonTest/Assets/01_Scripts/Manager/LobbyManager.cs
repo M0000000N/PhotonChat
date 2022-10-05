@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using Photon.Realtime;
 
-public class LobbyManager : MonoBehaviourPunCallbacks
+public class LobbyManager : MonoBehaviourPunCallbacks, SingletonBehaviour<LobbyManager>
 {
     private string gameVersion = "1.0.4";
 
