@@ -22,6 +22,6 @@ public class GameManager : SingletonBehaviour<GameManager>
     private void OnClickExitButton()
     {
         PhotonNetwork.LeaveRoom();
-        PhotonNetwork.LoadLevel("Title");
+        PhotonNetwork.LoadLevel("00_Title");
     }
 }

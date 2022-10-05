@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using Photon.Realtime;
 
-public class LobbyManager : MonoBehaviourPunCallbacks, SingletonBehaviour<LobbyManager>
+public class LobbyManager : MonoBehaviourPunCallbacks
 {
     private string gameVersion = "1.0.4";
 
@@ -160,7 +160,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks, SingletonBehaviour<LobbyM
     {
         logText.text = "방에 입장함";
 
-        PhotonNetwork.LoadLevel("Main");
+        PhotonNetwork.LoadLevel("01_Main");
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)

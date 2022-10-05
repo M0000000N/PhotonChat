@@ -27,11 +27,11 @@ public class RoomButton : MonoBehaviourPunCallbacks
 
     public void OnClickRoomButton()
     {
-        if (nickname.text.Length == 0)
-        {
-            logText.text = "닉네임을 입력하세요";
-            return;
-        }
+        //if (nickname.text.Length == 0)
+        //{
+        //    logText.text = "닉네임을 입력하세요";
+        //    return;
+        //}
 
         PhotonNetwork.JoinRoom(RoomInfo.Name);
     }
